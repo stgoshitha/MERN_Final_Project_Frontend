@@ -7,6 +7,7 @@ const RegisterPage = () => {
     name: '',
     email: '',
     password: '',
+    role: 'jobseeker', // Default role
   });
 
   const handleChange = (e) => {
@@ -20,7 +21,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/auth//register', formData);
+      await axios.post('/api/auth/register', formData);
       alert('Registration successful');
       // Redirect or clear form, etc.
     } catch (error) {
@@ -70,6 +71,35 @@ const RegisterPage = () => {
               required
             />
           </div>
+          <div className="mb-4">
+            <span className="block text-sm font-medium text-gray-700">Role</span>
+            <div className="flex items-center space-x-4 mt-2">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  id="jobseeker"
+                  name="role"
+                  value="jobseeker"
+                  checked={formData.role === 'jobseeker'}
+                  onChange={handleChange}
+                  className="form-radio text-blue-600"
+                />
+                <span className="ml-2 text-gray-700">Jobseeker</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  id="employer"
+                  name="role"
+                  value="employer"
+                  checked={formData.role === 'employer'}
+                  onChange={handleChange}
+                  className="form-radio text-blue-600"
+                />
+                <span className="ml-2 text-gray-700">Employer</span>
+              </label>
+            </div>
+          </div>
           <button
             type="submit"
             className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -77,8 +107,9 @@ const RegisterPage = () => {
             Register
           </button>
         </form>
-
-      <Link to={'/login'}>login</Link>
+        <div className="mt-4 text-center">
+          <Link to="/login" className="text-blue-500 hover:underline">Already have an account? Login</Link>
+        </div>
       </div>
     </div>
   );

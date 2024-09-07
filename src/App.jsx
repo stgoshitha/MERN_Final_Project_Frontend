@@ -5,6 +5,9 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import AdminDashboad from './pages/AdminDashboad'
 import { Toaster } from 'react-hot-toast'
+import AdminLayouts from './Layouts/AdminLayouts'
+import UserLayouts from './Layouts/UserLayouts'
+import PublicLayouts from './Layouts/PublicLayouts'
 
 
 
@@ -14,10 +17,19 @@ function App() {
       <BrowserRouter>
       <Toaster />
         <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/admin" element={<AdminDashboad />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path='/admin' element={<AdminLayouts/>}>
+          <Route index element={<AdminDashboad />} />
+          </Route>
+          
+          <Route path='/' element={<UserLayouts/>}>
+          <Route index element={<Home/>}/>
+          </Route>
+
+          <Route path='/' element={<PublicLayouts/>}>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          </Route>
+          
         </Routes>
       </BrowserRouter>
     </div>

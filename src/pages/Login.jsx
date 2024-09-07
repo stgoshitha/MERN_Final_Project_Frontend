@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { post } from '../services/ApiEndPoint';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { SetUser } from '../redux/AuthSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +18,13 @@ export default function Login() {
       const request = await post('/api/auth/login', { email, password });
       const response = request.data;
       if(request.status == 200){
+        if(response.user.role == "admin"){
+          navigate('/')
+        }else if(response.user.role == "jobSeeker"){
+          navigate('/')
+        }
         toast.success('Login Success');
+        dispatch(SetUser(response.user))
       }
       console.log(response);
     } catch (err) {
