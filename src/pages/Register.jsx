@@ -7,7 +7,7 @@ const RegisterPage = () => {
     name: '',
     email: '',
     password: '',
-    role: 'jobseeker', // Default role
+    role: 'jobSeeker', // Default role
   });
 
   const handleChange = (e) => {
@@ -80,7 +80,7 @@ const RegisterPage = () => {
                   id="jobseeker"
                   name="role"
                   value="jobseeker"
-                  checked={formData.role === 'jobseeker'}
+                  checked={formData.role === 'jobSeeker'}
                   onChange={handleChange}
                   className="form-radio text-blue-600"
                 />

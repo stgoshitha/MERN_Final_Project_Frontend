@@ -23,7 +23,7 @@ export default function AdminDashboard() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await del(`/api/admin/delet/${id}`); 
+      const response = await del(`/api/admin/delete/${id}`); 
       if (response.status === 200) {
         setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id)); 
         console.log('User deleted successfully:', response.data);
@@ -35,14 +35,13 @@ export default function AdminDashboard() {
     }
   };
 
-  // Filter users based on search query
+  // Filter users based on search query and role
   const filteredUsers = users
-  .filter(user => 
-    (user.role === 'jobSeeker' || user.role === 'employer') &&
-    (
+    .filter(user => user.role === 'admin') // Filter by role 'admin'
+    .filter(user =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.role.toLowerCase().includes(searchQuery.toLowerCase())
-    ));
+    );
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -50,7 +49,7 @@ export default function AdminDashboard() {
       <div className="mb-4 max-w-md mx-auto">
         <input
           type="text"
-          placeholder="Search by name or role..."
+          placeholder="Search by name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"

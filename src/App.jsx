@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast'
 import AdminLayouts from './Layouts/AdminLayouts'
 import UserLayouts from './Layouts/UserLayouts'
 import PublicLayouts from './Layouts/PublicLayouts'
+import AdminManage from './pages/AdminManage'
 
 
 
@@ -19,6 +20,8 @@ function App() {
         <Routes>
           <Route path='/admin' element={<AdminLayouts/>}>
           <Route index element={<AdminDashboad />} />
+          <Route path='adminManage' element={<AdminManage />} />
+          
           </Route>
           
           <Route path='/' element={<UserLayouts/>}>
