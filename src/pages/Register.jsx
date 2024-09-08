@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import InputField from '../components/InputField';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'jobSeeker', // Default role
+    confirmPassword: '', 
+    role: 'jobSeeker', 
   });
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,21 +25,38 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Check if password and confirm password match
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
     try {
       await axios.post('/api/auth/register', formData);
-      alert('Registration successful');
-      // Redirect or clear form, etc.
+      toast.success('Registration successful')
+      navigate('/login');
+
     } catch (error) {
       console.error('Error during registration', error);
-      alert('Registration failed');
+      toast.success('Registration failed')
     }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">Register As</h1>
         <form onSubmit={handleSubmit}>
+          {/* Name Field */}
+          <InputField
+        id="name"
+        label="name"
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+      />
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
             <input
@@ -47,6 +69,8 @@ const RegisterPage = () => {
               required
             />
           </div>
+          
+          {/* Email Field */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
@@ -59,6 +83,8 @@ const RegisterPage = () => {
               required
             />
           </div>
+          
+          {/* Password Field */}
           <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
             <input
@@ -71,6 +97,22 @@ const RegisterPage = () => {
               required
             />
           </div>
+          
+          {/* Confirm Password Field */}
+          <div className="mb-4">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          
+          {/* Role Selection */}
           <div className="mb-4">
             <span className="block text-sm font-medium text-gray-700">Role</span>
             <div className="flex items-center space-x-4 mt-2">
@@ -100,6 +142,8 @@ const RegisterPage = () => {
               </label>
             </div>
           </div>
+          
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
