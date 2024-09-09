@@ -3,15 +3,22 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import InputField from '../components/InputField';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '', 
     role: 'jobSeeker', 
   });
+
+  const handleRoleSelect = (role) => {
+    setFormData({ ...formData, role });
+  };
 
   const navigate = useNavigate()
 
@@ -26,7 +33,6 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Check if password and confirm password match
     if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
@@ -39,111 +45,91 @@ const RegisterPage = () => {
 
     } catch (error) {
       console.error('Error during registration', error);
-      toast.success('Registration failed')
+      toast.error('Registration failed')
     }
   };
 
   return (
+    <>
+    <Header/> 
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4 text-center">Register As</h1>
+        <div className="flex justify-center mb-4">
+          <button
+            onClick={() => handleRoleSelect('jobSeeker')}
+            className={`w-1/2 py-2 px-4 border border-gray-300 rounded-l-md focus:outline-none ${
+              formData.role === 'jobSeeker' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
+            }`}
+          >
+            Jobseeker
+          </button>
+          <button
+            onClick={() => handleRoleSelect('employer')}
+            className={`w-1/2 py-2 px-4 border border-gray-300 rounded-r-md focus:outline-none ${
+              formData.role === 'employer' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
+            }`}
+          >
+            Employer
+          </button>
+        </div>
         <form onSubmit={handleSubmit}>
-          {/* Name Field */}
+        
+          <div className='flex gap-5'>
           <InputField
         id="name"
-        label="name"
+        label="First Name"
         type="text"
-        name="name"
-        value={formData.name}
+        name="firstName"
+        value={formData.firstName}
         onChange={handleChange}
+        placeholder="First name"
+        required
       />
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+      <InputField
+        id="name"
+        label="Last Name"
+        type="text"
+        name="lastName"
+        value={formData.lastName}
+        onChange={handleChange}
+        placeholder="Last name"
+        required
+      />
+      
           </div>
-          
-          {/* Email Field */}
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          
-          {/* Password Field */}
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          
-          {/* Confirm Password Field */}
-          <div className="mb-4">
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          
-          {/* Role Selection */}
-          <div className="mb-4">
-            <span className="block text-sm font-medium text-gray-700">Role</span>
-            <div className="flex items-center space-x-4 mt-2">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  id="jobseeker"
-                  name="role"
-                  value="jobseeker"
-                  checked={formData.role === 'jobSeeker'}
-                  onChange={handleChange}
-                  className="form-radio text-blue-600"
-                />
-                <span className="ml-2 text-gray-700">Jobseeker</span>
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  id="employer"
-                  name="role"
-                  value="employer"
-                  checked={formData.role === 'employer'}
-                  onChange={handleChange}
-                  className="form-radio text-blue-600"
-                />
-                <span className="ml-2 text-gray-700">Employer</span>
-              </label>
-            </div>
-          </div>
-          
-          {/* Submit Button */}
+      <InputField
+        id="email"
+        label="Email"
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="Enter your email"
+        required
+      />
+
+<hr className='mt-5 mb-2'/>
+      <div>
+        <InputField
+        id="password"
+        label="Password"
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        required
+      />
+      <InputField
+        id="confirmPassword"
+        label="Confirm Password"
+        type="password"
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        required
+      />
+      </div>
           <button
             type="submit"
             className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -156,6 +142,8 @@ const RegisterPage = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
