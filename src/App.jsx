@@ -9,6 +9,7 @@ import AdminLayouts from './Layouts/AdminLayouts'
 import UserLayouts from './Layouts/UserLayouts'
 import PublicLayouts from './Layouts/PublicLayouts'
 import AdminManage from './pages/AdminManage'
+import ViewHome from './pages/ViewHome'
 
 
 
@@ -19,7 +20,8 @@ function App() {
       <Toaster />
         <Routes>
           <Route path='/admin' element={<AdminLayouts/>}>
-          <Route index element={<AdminDashboad />} />
+          <Route index element={<Home/>}/>
+          <Route path='admindash' element={<AdminDashboad />} />
           <Route path='adminManage' element={<AdminManage />} />
           
           </Route>
@@ -31,6 +33,7 @@ function App() {
           <Route path='/' element={<PublicLayouts/>}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="home" element={<ViewHome />} />
           </Route>
           
         </Routes>
